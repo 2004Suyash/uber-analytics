@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uber Power BI Dashboard</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* Power BI theme accents */
+    .pbi-yellow {
+      color: #F2C811;
+    }
+
+    .bg-pbi-yellow {
+      background-color: #F2C811;
+    }
+
+    .border-pbi-yellow {
+      border-color: #F2C811;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-slate-100 min-h-screen p-4 md:p-6 font-sans antialiased">
+
+  <!-- Header -->
+  <header class="flex flex-col md:flex-row md:items-center justify-between pb-4 mb-6 border-b border-slate-800 gap-4">
+    <div class="flex items-center gap-3">
+      <div
+        class="w-10 h-10 rounded-lg bg-yellow-500/20 border border-yellow-500/40 flex items-center justify-center font-bold text-yellow-400 text-lg shadow-sm">
+        📊
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span
+            class="text-xs uppercase tracking-wider font-semibold text-yellow-400 bg-yellow-500/10 px-2 py-0.5 rounded border border-yellow-500/20">Power
+            BI Report</span>
+          <span class="text-xs text-slate-400">1,154 Cleaned Trips</span>
+        </div>
+        <h1 class="text-2xl font-bold tracking-tight text-white">Uber Ride Operations & Performance Analytics</h1>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <span
+        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        Data Connected: Uber_Cleaned_PowerBI.csv
+      </span>
+    </div>
+  </header>
+
+  <!-- Slicers / Interactive Filters Bar -->
+  <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 mb-6 shadow-md backdrop-blur">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider mr-2">Slicers:</span>
+
+        <!-- Category Filter -->
+        <div class="flex bg-slate-800 p-1 rounded-lg border border-slate-700 text-xs">
+          <button onclick="setFilter('category', 'All')" id="btn-cat-all"
+            class="px-3 py-1 rounded-md font-medium bg-yellow-500 text-slate-950 transition">All Categories</button>
+          <button onclick="setFilter('category', 'Business')" id="btn-cat-biz"
+            class="px-3 py-1 rounded-md font-medium text-slate-300 hover:text-white transition">Business (93%)</button>
+          <button onclick="setFilter('category', 'Personal')" id="btn-cat-per"
+            class="px-3 py-1 rounded-md font-medium text-slate-300 hover:text-white transition">Personal (7%)</button>
+        </div>
+
+        <!-- Time Period Filter -->
+        <div class="flex bg-slate-800 p-1 rounded-lg border border-slate-700 text-xs">
+          <button onclick="setFilter('time', 'All')" id="btn-time-all"
+            class="px-2.5 py-1 rounded-md font-medium bg-cyan-600 text-white transition">All Hours</button>
+          <button onclick="setFilter('time', 'Afternoon')" id="btn-time-aft"
+            class="px-2.5 py-1 rounded-md font-medium text-slate-300 hover:text-white transition">Afternoon
+            (37%)</button>
+          <button onclick="setFilter('time', 'Evening')" id="btn-time-eve"
+            class="px-2.5 py-1 rounded-md font-medium text-slate-300 hover:text-white transition">Evening (30%)</button>
+          <button onclick="setFilter('time', 'Morning')" id="btn-time-mor"
+            class="px-2.5 py-1 rounded-md font-medium text-slate-300 hover:text-white transition">Morning (17%)</button>
+          <button onclick="setFilter('time', 'Night')" id="btn-time-nit"
+            class="px-2.5 py-1 rounded-md font-medium text-slate-300 hover:text-white transition">Night (15%)</button>
+        </div>
+      </div>
+
+      <button onclick="resetFilters()"
+        class="text-xs text-slate-400 hover:text-yellow-400 flex items-center gap-1 transition">
+        <span>↺</span> Reset Filters
+      </button>
+    </div>
+  </div>
+
+  <!-- Row 1: Executive KPI Cards -->
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+    <!-- KPI 1 -->
+    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-sm relative overflow-hidden">
+      <div class="absolute top-0 left-0 right-0 h-1 bg-yellow-500"></div>
+      <p class="text-xs text-slate-400 font-medium">TOTAL RIDES</p>
+      <h3 id="kpi-rides" class="text-2xl font-bold text-white mt-1">1,154</h3>
+      <p class="text-xs text-emerald-400 mt-1">100% Verified Trips</p>
+    </div>
+
+    <!-- KPI 2 -->
+    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-sm relative overflow-hidden">
+      <div class="absolute top-0 left-0 right-0 h-1 bg-cyan-500"></div>
+      <p class="text-xs text-slate-400 font-medium">TOTAL MILES</p>
+      <h3 id="kpi-miles" class="text-2xl font-bold text-white mt-1">12,195 <span
+          class="text-xs font-normal text-slate-400">mi</span></h3>
+      <p class="text-xs text-cyan-400 mt-1">Sum of distances</p>
+    </div>
+
+    <!-- KPI 3 -->
+    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-sm relative overflow-hidden">
+      <div class="absolute top-0 left-0 right-0 h-1 bg-indigo-500"></div>
+      <p class="text-xs text-slate-400 font-medium">AVG TRIP DISTANCE</p>
+      <h3 id="kpi-avg-miles" class="text-2xl font-bold text-white mt-1">10.6 <span
+          class="text-xs font-normal text-slate-400">mi</span></h3>
+      <p class="text-xs text-slate-400 mt-1">Median: 6.0 mi</p>
+    </div>
+
+    <!-- KPI 4 -->
+    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-sm relative overflow-hidden">
+      <div class="absolute top-0 left-0 right-0 h-1 bg-purple-500"></div>
+      <p class="text-xs text-slate-400 font-medium">AVG DURATION</p>
+      <h3 id="kpi-duration" class="text-2xl font-bold text-white mt-1">23.2 <span
+          class="text-xs font-normal text-slate-400">min</span></h3>
+      <p class="text-xs text-slate-400 mt-1">Total: 446 hrs</p>
+    </div>
+
+    <!-- KPI 5 -->
+    <div
+      class="bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-sm relative overflow-hidden col-span-2 md:col-span-1">
+      <div class="absolute top-0 left-0 right-0 h-1 bg-emerald-500"></div>
+      <p class="text-xs text-slate-400 font-medium">BUSINESS SHARE</p>
+      <h3 id="kpi-biz-pct" class="text-2xl font-bold text-white mt-1">93.3%</h3>
+      <p class="text-xs text-slate-400 mt-1">1,077 Corporate Rides</p>
+    </div>
+  </div>
+
+  <!-- Row 2: Charts Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+
+    <!-- Category Donut / Split -->
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
+      <h3 class="text-sm font-semibold text-slate-200 uppercase tracking-wider mb-4 flex items-center justify-between">
+        <span>Rides by Category</span>
+        <span class="text-xs text-slate-400 font-normal">Donut Chart</span>
+      </h3>
+      <div class="flex flex-col items-center justify-center py-4">
+        <div class="relative w-40 h-40">
+          <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+            <!-- Background circle -->
+            <path class="text-slate-800" stroke-width="4.5" stroke="currentColor" fill="none"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <!-- Business slice (93.3%) -->
+            <path class="text-yellow-400" stroke-dasharray="93.3, 100" stroke-width="4.5" stroke-linecap="round"
+              stroke="currentColor" fill="none"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+            <span class="text-2xl font-bold text-white">93.3%</span>
+            <span class="text-[11px] text-slate-400">Business</span>
+          </div>
+        </div>
+        <div class="w-full mt-6 space-y-2 text-xs">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-sm bg-yellow-400"></span>
+              <span>Business</span>
+            </div>
+            <span class="font-semibold text-slate-200">1,077 rides (93.3%)</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-sm bg-slate-700"></span>
+              <span>Personal</span>
+            </div>
+            <span class="font-semibold text-slate-200">77 rides (6.7%)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Ride Purposes Bar Chart -->
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm lg:col-span-2">
+      <h3 class="text-sm font-semibold text-slate-200 uppercase tracking-wider mb-4 flex items-center justify-between">
+        <span>Ride Purposes Breakdown</span>
+        <span class="text-xs text-slate-400 font-normal">Clustered Bar Chart</span>
+      </h3>
+      <div class="space-y-3 pt-1">
+        <!-- Purpose 1 -->
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span class="font-medium text-slate-300">Not Specified</span>
+            <span class="font-semibold text-slate-300">502 (43.5%)</span>
+          </div>
+          <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+            <div class="bg-slate-600 h-2.5 rounded-full" style="width: 43.5%"></div>
+          </div>
+        </div>
+
+        <!-- Purpose 2 -->
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span class="font-medium text-slate-200">Meeting</span>
+            <span class="font-semibold text-yellow-400">186 (16.1%)</span>
+          </div>
+          <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+            <div class="bg-yellow-400 h-2.5 rounded-full" style="width: 37%"></div>
+          </div>
+        </div>
+
+        <!-- Purpose 3 -->
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span class="font-medium text-slate-200">Meal / Entertain</span>
+            <span class="font-semibold text-cyan-400">160 (13.9%)</span>
+          </div>
+          <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+            <div class="bg-cyan-400 h-2.5 rounded-full" style="width: 32%"></div>
+          </div>
+        </div>
+
+        <!-- Purpose 4 -->
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span class="font-medium text-slate-200">Errand / Supplies</span>
+            <span class="font-semibold text-teal-400">128 (11.1%)</span>
+          </div>
+          <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+            <div class="bg-teal-400 h-2.5 rounded-full" style="width: 25.5%"></div>
+          </div>
+        </div>
+
+        <!-- Purpose 5 -->
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span class="font-medium text-slate-200">Customer Visit</span>
+            <span class="font-semibold text-indigo-400">101 (8.8%)</span>
+          </div>
+          <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+            <div class="bg-indigo-400 h-2.5 rounded-full" style="width: 20%"></div>
+          </div>
+        </div>
+
+        <!-- Purpose 6 -->
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span class="font-medium text-slate-200">Temporary Site</span>
+            <span class="font-semibold text-purple-400">50 (4.3%)</span>
+          </div>
+          <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+            <div class="bg-purple-400 h-2.5 rounded-full" style="width: 10%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 3: Temporal Trends & Day of Week -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+
+    <!-- Monthly Demand Trend -->
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
+      <h3 class="text-sm font-semibold text-slate-200 uppercase tracking-wider mb-4 flex items-center justify-between">
+        <span>Monthly Ride Volume (Jan - Dec 2016)</span>
+        <span class="text-xs text-yellow-400 font-normal">Peak: Dec (146)</span>
+      </h3>
+      <div class="grid grid-cols-12 gap-1 items-end h-40 pt-4 px-2 border-b border-slate-800">
+        <!-- Jan -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-yellow-500/70 hover:bg-yellow-400 rounded-t transition" style="height: 42%"
+            title="Jan: 61"></div>
+          <span class="text-[10px] text-slate-400">Jan</span>
+        </div>
+        <!-- Feb -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-yellow-500/70 hover:bg-yellow-400 rounded-t transition" style="height: 79%"
+            title="Feb: 115"></div>
+          <span class="text-[10px] text-slate-400">Feb</span>
+        </div>
+        <!-- Mar -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-yellow-500/70 hover:bg-yellow-400 rounded-t transition" style="height: 77%"
+            title="Mar: 113"></div>
+          <span class="text-[10px] text-slate-400">Mar</span>
+        </div>
+        <!-- Apr -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-yellow-500/70 hover:bg-yellow-400 rounded-t transition" style="height: 37%"
+            title="Apr: 54"></div>
+          <span class="text-[10px] text-slate-400">Apr</span>
+        </div>
+        <!-- May -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-yellow-500/70 hover:bg-yellow-400 rounded-t transition" style="height: 33%"
+            title="May: 49"></div>
+          <span class="text-[10px] text-slate-400">May</span>
+        </div>
+        <!-- Jun -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-yellow-500/70 hover:bg-yellow-400 rounded-t transition" style="height: 73%"
+            title="Jun: 107"></div>
+          <span class="text-[10px] text-slate-400">Jun</span>
+        </div>
+        <!-- Jul -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-yellow-500/70 hover:bg-yellow-400 rounded-t transition" style="height: 76%"
+            title="Jul: 112"></div>
+          <span class="text-[10px] text-slate-400">Jul</span>
+        </div>
+        <!-- Aug -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-yellow-500/70 hover:bg-yellow-400 rounded-t transition" style="height: 91%"
+            title="Aug: 133"></div>
+          <span class="text-[10px] text-slate-400">Aug</span>
+        </div>
+        <!-- Sep -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-yellow-500/70 hover:bg-yellow-400 rounded-t transition" style="height: 25%"
+            title="Sep: 36"></div>
+          <span class="text-[10px] text-slate-400">Sep</span>
+        </div>
+        <!-- Oct -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-yellow-500/70 hover:bg-yellow-400 rounded-t transition" style="height: 72%"
+            title="Oct: 106"></div>
+          <span class="text-[10px] text-slate-400">Oct</span>
+        </div>
+        <!-- Nov -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-yellow-500/70 hover:bg-yellow-400 rounded-t transition" style="height: 84%"
+            title="Nov: 122"></div>
+          <span class="text-[10px] text-slate-400">Nov</span>
+        </div>
+        <!-- Dec -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-yellow-400 rounded-t shadow-sm" style="height: 100%" title="Dec: 146"></div>
+          <span class="text-[10px] text-yellow-400 font-bold">Dec</span>
+        </div>
+      </div>
+      <p class="text-[11px] text-slate-400 mt-3 text-center">Peak activity during holiday & year-end corporate travel in
+        August, November & December.</p>
+    </div>
+
+    <!-- Day of the Week Distribution -->
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
+      <h3 class="text-sm font-semibold text-slate-200 uppercase tracking-wider mb-4 flex items-center justify-between">
+        <span>Rides by Day of the Week</span>
+        <span class="text-xs text-cyan-400 font-normal">Peak: Friday (206)</span>
+      </h3>
+      <div class="grid grid-cols-7 gap-2 items-end h-40 pt-4 px-2 border-b border-slate-800">
+        <!-- Mon -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-cyan-600/70 hover:bg-cyan-500 rounded-t transition" style="height: 84%"
+            title="Mon: 174"></div>
+          <span class="text-[11px] text-slate-400">Mon</span>
+        </div>
+        <!-- Tue -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-cyan-600/70 hover:bg-cyan-500 rounded-t transition" style="height: 85%"
+            title="Tue: 175"></div>
+          <span class="text-[11px] text-slate-400">Tue</span>
+        </div>
+        <!-- Wed -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-cyan-600/70 hover:bg-cyan-500 rounded-t transition" style="height: 71%"
+            title="Wed: 147"></div>
+          <span class="text-[11px] text-slate-400">Wed</span>
+        </div>
+        <!-- Thu -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-cyan-600/70 hover:bg-cyan-500 rounded-t transition" style="height: 75%"
+            title="Thu: 154"></div>
+          <span class="text-[11px] text-slate-400">Thu</span>
+        </div>
+        <!-- Fri -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-cyan-400 rounded-t shadow-sm" style="height: 100%" title="Fri: 206"></div>
+          <span class="text-[11px] text-cyan-400 font-bold">Fri</span>
+        </div>
+        <!-- Sat -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-cyan-600/70 hover:bg-cyan-500 rounded-t transition" style="height: 73%"
+            title="Sat: 150"></div>
+          <span class="text-[11px] text-slate-400">Sat</span>
+        </div>
+        <!-- Sun -->
+        <div class="flex flex-col items-center gap-1">
+          <div class="w-full bg-cyan-600/70 hover:bg-cyan-500 rounded-t transition" style="height: 72%"
+            title="Sun: 148"></div>
+          <span class="text-[11px] text-slate-400">Sun</span>
+        </div>
+      </div>
+      <p class="text-[11px] text-slate-400 mt-3 text-center">Friday has the highest trip volume (206 rides), followed by
+        Tuesday and Monday.</p>
+    </div>
+  </div>
+
+  <!-- Row 4: Top Locations Table -->
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm mb-6">
+    <h3 class="text-sm font-semibold text-slate-200 uppercase tracking-wider mb-4">Top 5 Pick-up & Drop-off Hubs</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Top Pick-ups -->
+      <div>
+        <h4 class="text-xs font-semibold text-yellow-400 mb-2">MOST FREQUENT START LOCATIONS</h4>
+        <div class="divide-y divide-slate-800 text-xs">
+          <div class="py-2 flex justify-between"><span>1. Cary</span><span class="font-semibold text-white">201
+              rides</span></div>
+          <div class="py-2 flex justify-between"><span>2. Morrisville</span><span class="font-semibold text-white">85
+              rides</span></div>
+          <div class="py-2 flex justify-between"><span>3. Whitebridge</span><span class="font-semibold text-white">68
+              rides</span></div>
+          <div class="py-2 flex justify-between"><span>4. Islamabad</span><span class="font-semibold text-white">57
+              rides</span></div>
+          <div class="py-2 flex justify-between"><span>5. Durham / Lahore</span><span
+              class="font-semibold text-white">36 rides</span></div>
+        </div>
+      </div>
+
+      <!-- Top Drop-offs -->
+      <div>
+        <h4 class="text-xs font-semibold text-cyan-400 mb-2">MOST FREQUENT STOP LOCATIONS</h4>
+        <div class="divide-y divide-slate-800 text-xs">
+          <div class="py-2 flex justify-between"><span>1. Cary</span><span class="font-semibold text-white">202
+              rides</span></div>
+          <div class="py-2 flex justify-between"><span>2. Morrisville</span><span class="font-semibold text-white">84
+              rides</span></div>
+          <div class="py-2 flex justify-between"><span>3. Whitebridge</span><span class="font-semibold text-white">65
+              rides</span></div>
+          <div class="py-2 flex justify-between"><span>4. Islamabad</span><span class="font-semibold text-white">58
+              rides</span></div>
+          <div class="py-2 flex justify-between"><span>5. Durham / Lahore</span><span
+              class="font-semibold text-white">36 rides</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Client-side Interactive Filter Script -->
+  <script>
+    let activeFilters = { category: 'All', time: 'All' };
+
+    function setFilter(type, value) {
+      activeFilters[type] = value;
+
+      // Update UI buttons
+      if (type === 'category') {
+        document.getElementById('btn-cat-all').className = value === 'All' ? 'px-3 py-1 rounded-md font-medium bg-yellow-500 text-slate-950 transition' : 'px-3 py-1 rounded-md font-medium text-slate-300 hover:text-white transition';
+        document.getElementById('btn-cat-biz').className = value === 'Business' ? 'px-3 py-1 rounded-md font-medium bg-yellow-500 text-slate-950 transition' : 'px-3 py-1 rounded-md font-medium text-slate-300 hover:text-white transition';
+        document.getElementById('btn-cat-per').className = value === 'Personal' ? 'px-3 py-1 rounded-md font-medium bg-yellow-500 text-slate-950 transition' : 'px-3 py-1 rounded-md font-medium text-slate-300 hover:text-white transition';
+      }
+      if (type === 'time') {
+        const timeBtns = { 'All': 'btn-time-all', 'Afternoon': 'btn-time-aft', 'Evening': 'btn-time-eve', 'Morning': 'btn-time-mor', 'Night': 'btn-time-nit' };
+        for (const [k, id] of Object.entries(timeBtns)) {
+          document.getElementById(id).className = value === k ? 'px-2.5 py-1 rounded-md font-medium bg-cyan-600 text-white transition' : 'px-2.5 py-1 rounded-md font-medium text-slate-300 hover:text-white transition';
+        }
+      }
+
+      // Dynamic KPI recalculation
+      if (activeFilters.category === 'Business') {
+        document.getElementById('kpi-rides').innerText = '1,077';
+        document.getElementById('kpi-miles').innerHTML = '11,487 <span class="text-xs font-normal text-slate-400">mi</span>';
+        document.getElementById('kpi-avg-miles').innerHTML = '10.7 <span class="text-xs font-normal text-slate-400">mi</span>';
+        document.getElementById('kpi-duration').innerHTML = '23.4 <span class="text-xs font-normal text-slate-400">min</span>';
+        document.getElementById('kpi-biz-pct').innerText = '100.0%';
+      } else if (activeFilters.category === 'Personal') {
+        document.getElementById('kpi-rides').innerText = '77';
+        document.getElementById('kpi-miles').innerHTML = '708 <span class="text-xs font-normal text-slate-400">mi</span>';
+        document.getElementById('kpi-avg-miles').innerHTML = '9.2 <span class="text-xs font-normal text-slate-400">mi</span>';
+        document.getElementById('kpi-duration').innerHTML = '20.6 <span class="text-xs font-normal text-slate-400">min</span>';
+        document.getElementById('kpi-biz-pct').innerText = '0.0%';
+      } else {
+        document.getElementById('kpi-rides').innerText = '1,154';
+        document.getElementById('kpi-miles').innerHTML = '12,195 <span class="text-xs font-normal text-slate-400">mi</span>';
+        document.getElementById('kpi-avg-miles').innerHTML = '10.6 <span class="text-xs font-normal text-slate-400">mi</span>';
+        document.getElementById('kpi-duration').innerHTML = '23.2 <span class="text-xs font-normal text-slate-400">min</span>';
+        document.getElementById('kpi-biz-pct').innerText = '93.3%';
+      }
+    }
+
+    function resetFilters() {
+      setFilter('category', 'All');
+      setFilter('time', 'All');
+    }
+  </script>
+</body>
+
+</html>

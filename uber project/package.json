@@ -1,0 +1,28 @@
+{
+  "name": "uber-analytics-project",
+  "version": "1.0.0",
+  "description": "Uber Ride Operations & Performance Analytics with modular Frontend and Backend architecture",
+  "scripts": {
+    "dev": "node dev.js",
+    "dev:open": "node dev.js --open",
+    "dev:both": "node dev.js",
+    "dev:frontend": "node frontend/server.js",
+    "dev:backend": "node backend/server.js",
+    "start": "node dev.js",
+    "start:frontend": "node frontend/server.js",
+    "start:backend": "node backend/server.js",
+    "start:backend:py": "python backend/server.py",
+    "test": "node frontend/check_syntax.js",
+    "test:frontend": "node frontend/check_syntax.js"
+  },
+  "keywords": [
+    "uber",
+    "analytics",
+    "react",
+    "dashboard",
+    "eda",
+    "fullstack"
+  ],
+  "author": "",
+  "license": "MIT"
+}

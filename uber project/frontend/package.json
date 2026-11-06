@@ -1,0 +1,15 @@
+{
+  "name": "uber-analytics-frontend",
+  "version": "1.0.0",
+  "description": "Uber Analytics React 18 Dashboard UI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "dev:open": "node server.js --open",
+    "test": "node check_syntax.js"
+  },
+  "keywords": ["uber", "frontend", "react", "dashboard"],
+  "license": "MIT"
+}
+

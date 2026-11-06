@@ -1,0 +1,14 @@
+{
+  "name": "uber-analytics-backend",
+  "version": "1.0.0",
+  "description": "Uber Analytics Backend REST API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "py": "python server.py"
+  },
+  "keywords": ["uber", "backend", "api"],
+  "license": "MIT"
+}
+

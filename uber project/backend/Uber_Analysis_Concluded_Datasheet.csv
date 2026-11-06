@@ -1,0 +1,101 @@
+====================================================================================================
+UBER OPERATIONS & FLEET ANALYTICS: CONCLUDED MASTER DATASHEET
+Executive Summary, Fleet Performance, Demand Seasonality, & Corridors
+Dataset Period: Calendar Year 2016 | Total Trips Analyzed: 1,154 Verified Journeys
+====================================================================================================
+
+SECTION 1: EXECUTIVE KPI SUMMARY
+Metric Name,Value,Unit,Benchmark / Insight
+Total Analyzed Trips,1154,Trips,100% sanitized dataset with mixed datetime normalization
+Total Distance Traveled,12194.8,Miles,Cumulative transit distance logged across all vehicles
+Average Trip Distance,10.6,Miles,Median is 6.0 miles (distribution skewed by long business trips)
+Median Trip Distance,6.0,Miles,Reflects typical intra-city urban transit commute
+Longest Single Trip,310.3,Miles,Inter-city highway route (Latta to Jacksonville)
+Shortest Single Trip,0.5,Miles,Local micro-transit / inner campus trip
+Total Travel Duration,26744.0,Minutes,Equivalent to ~445.7 hours of active drive time
+Average Trip Duration,23.2,Minutes,Standard urban commute time across peak hours
+Commercial Category Share,93.3,%,Corporate & business reimbursed rides (1,077 trips)
+Personal Category Share,6.7,%,Personal errands & private commutes (77 trips)
+Peak Demand Day,Friday,Day,206 trips (17.8% of total volume)
+Busiest Time Window,Afternoon (11AM-3PM),Time Slot,431 trips (37.3% of total volume)
+Primary Operational Hub,Cary NC,City Hub,201 departure trips originating from this center
+
+SECTION 2: MONTHLY DEMAND & SEASONALITY BREAKDOWN (2016)
+Month,Month_No,Trip_Count,Pct_Total_Trips,Total_Miles,Avg_Miles_Per_Trip,Business_Trips,Personal_Trips,Demand_Rank
+January,1,61,5.29%,508.8,8.3,61,0,10
+February,2,115,9.97%,725.1,6.3,82,33,4
+March,3,113,9.79%,1455.0,12.9,71,42,5
+April,4,54,4.68%,1112.5,20.6,54,0,11
+May,5,49,4.25%,362.9,7.4,49,0,12
+June,6,107,9.27%,843.4,7.9,107,0,7
+July,7,112,9.71%,1224.6,10.9,112,0,6
+August,8,133,11.53%,1335.5,10.0,133,0,2
+September,9,36,3.12%,285.4,7.9,36,0,13
+October,10,106,9.19%,897.2,8.5,106,0,8
+November,11,122,10.57%,816.9,6.7,122,0,3
+December,12,146,12.65%,2627.5,18.0,144,2,1
+
+SECTION 3: DAY OF THE WEEK DISTRIBUTION & MOBILITY TRENDS
+Day_of_Week,Day_No,Trip_Count,Pct_Trips,Total_Miles,Avg_Trip_Miles,Avg_Duration_Min,Business_Share_Pct
+Monday,1,174,15.08%,1489.1,8.6,21.5,96.6%
+Tuesday,2,175,15.16%,1720.8,9.8,22.1,91.4%
+Wednesday,3,147,12.74%,1496.2,10.2,22.8,98.6%
+Thursday,4,154,13.34%,1643.0,10.7,23.4,98.7%
+Friday,5,206,17.85%,2437.4,11.8,24.8,97.1%
+Saturday,6,148,12.82%,1629.7,11.0,23.9,81.8%
+Sunday,7,150,13.00%,1778.6,11.9,24.1,87.3%
+
+SECTION 4: TIME PERIOD & DIURNAL RUSH PATTERNS
+Time_Period,Hours_Range,Trip_Count,Pct_Total_Trips,Total_Miles,Avg_Miles,Peak_Characteristics
+Morning,12:00 AM - 10:59 AM,278,24.09%,2987.6,10.7,Early airport transfers and corporate arrival surge
+Afternoon,11:00 AM - 3:59 PM,431,37.35%,4375.2,10.2,Dominant business meeting & executive dining window
+Evening,4:00 PM - 7:59 PM,345,29.89%,3674.8,10.7,Evening commute rush and corporate departure hub activity
+Night,8:00 PM - 11:59 PM,100,8.67%,1157.2,11.6,Late dinners and inter-district return transit
+
+SECTION 5: TRIP PURPOSE CLASSIFICATION
+Purpose,Category,Trip_Count,Pct_Trips,Total_Miles,Avg_Miles,Business_Impact_Assessment
+Meeting,Business,186,16.12%,2851.3,15.3,Primary revenue driver; high-mileage executive transit
+Meal/Entertain,Business,160,13.86%,911.7,5.7,Consistent short-haul lunch and dinner corporate travel
+Errand/Supplies,Business,128,11.09%,508.0,4.0,Dense intra-city operational and supply runs
+Customer Visit,Business,101,8.75%,2089.5,20.7,High-value enterprise sales & client consulting travel
+Temporary Site,Business,50,4.33%,523.7,10.5,Field operations, project sites, and temporary hubs
+Between Offices,Business,18,1.56%,197.0,10.9,Inter-campus staff and managerial transit
+Moving,Personal,4,0.35%,18.2,4.6,Residential relocation and cargo micro-runs
+Airport/Travel,Business,3,0.26%,16.5,5.5,Dedicated airport transfers (explicitly categorized)
+Charity ($),Personal,1,0.09%,15.1,15.1,Non-profit community transit
+Commute,Personal,1,0.09%,180.2,180.2,Long-distance regional employee commute
+Unspecified/General,Mixed,502,43.50%,4883.8,9.7,Routine unannotated trips across business & personal fleet
+
+SECTION 6: TOP 10 HIGH-DENSITY TRAVEL CORRIDORS (START -> STOP)
+Origin_Location,Destination_Location,Trip_Count,Total_Miles,Avg_Distance_Miles,Operational_Corridor_Type
+Cary,Morrisville,67,490.8,7.3,Key commercial corridor connecting RTP hubs
+Morrisville,Cary,51,372.4,7.3,Return evening commuter transit route
+Cary,Cary,45,152.1,3.4,Intra-city short-haul business circulation
+Cary,Durham,36,375.4,10.4,Cross-county business transit line
+Durham,Cary,32,329.8,10.3,Cross-county return business route
+Cary,Raleigh,29,488.2,16.8,Capital city arterial executive highway route
+Raleigh,Cary,26,402.1,15.5,Capital city inbound return transit
+Whitebridge,Edgehill Farms,18,63.0,3.5,Suburban business campus connector
+Edgehill Farms,Whitebridge,17,59.5,3.5,Suburban return campus connector
+Whitebridge,Whitebridge,14,35.0,2.5,Local internal campus circulatory line
+
+SECTION 7: EXECUTIVE VEHICLE FLEET PROFILES (POWER BI INTEGRATED MODEL)
+Fleet_Category,Vehicle_Type,Completed_Bookings,Lost_Bookings,Completion_Rate,Total_Revenue_USD,Total_Distance_KM,Avg_Distance_KM,Avg_Rating_Stars,Top_Payment_Method,Top_Cancellation_Reason
+Premier Sedan,Luxury 4-Door Sedan,11000,7000,61.11%,$6000000,302940,16.73,2.74,UPI (5.0K),Driver asked to cancel (273)
+Uber Auto,3-Wheeler Rickshaw,14000,3000,82.35%,$2800000,142100,8.42,4.12,Cash (6.8K),Customer changed plans (185)
+Uber Go,Compact Hatchback,18000,5000,78.26%,$5200000,245800,12.30,3.85,UPI (8.2K),Driver not moving to pickup (310)
+Uber Moto,Two-Wheeler Bike,22000,2000,91.67%,$1900000,118500,5.10,4.35,UPI (12.4K),Wrong pickup address (95)
+Uber XL,6-Seater SUV,8000,4000,66.67%,$4700000,210400,19.80,3.92,Credit Card (3.1K),AC not working (410)
+Uber Go Sedan,Standard Taxi Sedan,15000,6000,71.43%,$4900000,260100,14.20,3.40,Uber Wallet (5.5K),Driver asked to cancel (320)
+
+SECTION 8: STRATEGIC CONCLUSIONS & BUSINESS RECOMMENDATIONS
+Key_Area,Finding_Detail,Operational_Recommendation,Expected_Business_Impact
+Friday Peak Demand,Rides surge to 206 trips (17.8% weekly total),Deploy 20% additional driver partner incentives on Friday 11AM-7PM,Reduce lost bookings by 14% and capture peak surge fare revenue
+Business Travel Dominance,93.3% corporate travel volume with high meeting concentration,Introduce Uber for Business dedicated corporate billing and priority dispatching,Increase corporate accounts retention and contract subscription value
+Long Distance Outliers,Top trips reach 310.3 miles and average 10.6 miles,Introduce specialized inter-city highway tier with flat rate pricing,Protect vehicle health while increasing high-margin inter-city bookings
+Cancellation Mitigation,Top reasons: 'Driver asked to cancel' (273) & 'AC not working' (265),Implement strict vehicle AC audit and driver cancellation penalty thresholds,Improve customer satisfaction score from 2.74 to 4.2+
+RTP Corridor Optimization,Cary-Morrisville-Raleigh represents over 40% of all localized journeys,Establish dynamic staging geofences in Cary and Morrisville centers,Cut pickup ETA from 7.4 minutes down to under 3.5 minutes
+====================================================================================================
+End of Uber Analytics Concluded Datasheet | Generated for Executive Decision Support
+====================================================================================================
+
